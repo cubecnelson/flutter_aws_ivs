@@ -1,13 +1,14 @@
 import Foundation
 import Flutter
 import UIKit
+import AmazonIVSBroadcast
 
 class FlutterAwsIvsView: NSObject, FlutterPlatformView {
-    private var _nativeWebView: AWSBroadcastView
+    private var _awsBoardcastView: AWSBroadcastView
     private var _methodChannel: FlutterMethodChannel
     
     func view() -> UIView {
-        return _nativeWebView
+        return _awsBoardcastView
     }
     
     init(
@@ -17,13 +18,14 @@ class FlutterAwsIvsView: NSObject, FlutterPlatformView {
         binaryMessenger messenger: FlutterBinaryMessenger
     ) {
         var layout = ParticipantCollectionViewLayout()
-        _nativeWebView = AWSBroadcastView.init(frame: frame, collectionViewLayout: layout)
+        _awsBoardcastView = AWSBroadcastView.init(frame: frame, collectionViewLayout: layout)
+        
         _methodChannel = FlutterMethodChannel(name: "flutter_aws_ivs_\(viewId)", binaryMessenger: messenger)
 
         super.init()
         // iOS views can be created here
+        _awsBoardcastView.stateProtocol = self
         _methodChannel.setMethodCallHandler(onMethodCall)
-
     }
 
 
@@ -40,13 +42,37 @@ class FlutterAwsIvsView: NSObject, FlutterPlatformView {
     }
     
     func toggleLocalVideoMute(call: FlutterMethodCall, result: FlutterResult){
-        var isVideoMuted = _nativeWebView.toggleLocalVideoMute()
+        var isVideoMuted = _awsBoardcastView.toggleLocalVideoMute()
         result(isVideoMuted)
     }
     
     func initView(call: FlutterMethodCall, result: FlutterResult){
-        _nativeWebView.initView()
+        _awsBoardcastView.initView()
         result(true)
     }
+    
+}
+
+extension FlutterAwsIvsView : AWSBroadcastViewStateProtocol {
+    func onError() {
+        self._methodChannel.invokeMethod("onError", arguments: nil)
+    }
+    
+    func onConnectionStateChanged(connectionState: IVSStageConnectionState) {
+        self._methodChannel.invokeMethod("onConnectionStateChanged", arguments: connectionState.rawValue)
+    }
+    
+    func onLocalAudioStateChanged(isMuted: Bool) {
+        self._methodChannel.invokeMethod("onLocalAudioStateChanged", arguments: isMuted)
+    }
+    
+    func onLocalVideoStateChanged(isMuted: Bool) {
+        self._methodChannel.invokeMethod("onLocalVideoStateChanged", arguments: isMuted)
+    }
+    
+    func onBroadcastStateChanged(isBroadcasting: Bool) {
+        self._methodChannel.invokeMethod("onBroadcastStateChanged", arguments: isBroadcasting)
+    }
+    
     
 }

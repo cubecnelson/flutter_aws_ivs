@@ -9,10 +9,20 @@ import Foundation
 import UIKit
 import AmazonIVSBroadcast
 
+protocol AWSBroadcastViewStateProtocol: AnyObject {
+    func onError()
+    func onConnectionStateChanged(connectionState: IVSStageConnectionState)
+    func onLocalAudioStateChanged(isMuted: Bool)
+    func onLocalVideoStateChanged(isMuted: Bool)
+    func onBroadcastStateChanged(isBroadcasting: Bool)
+
+}
 
 class AWSBroadcastView: UICollectionView {
     
     private let viewModel = StageViewModel()
+    
+    var stateProtocol: AWSBroadcastViewStateProtocol?
     
     func initView() {
         
@@ -44,21 +54,25 @@ class AWSBroadcastView: UICollectionView {
             }
         }
         
-        viewModel.errorAlerts.add { [weak self] error in
-            // on error
+        viewModel.errorAlerts.add { [self] error in
+            self.stateProtocol?.onError()
         }
         
-        viewModel.observableStageConnectionState.addAndNotify {_ in
+        viewModel.observableStageConnectionState.addAndNotify { [self] connectionState in
+            self.stateProtocol?.onConnectionStateChanged(connectionState: connectionState)
         }
         
-        viewModel.localUserAudioMuted.addAndNotify {_ in
+        viewModel.localUserAudioMuted.addAndNotify {isMuted in
+            self.stateProtocol?.onLocalAudioStateChanged(isMuted: isMuted)
         }
         
-        viewModel.localUserVideoMuted.addAndNotify {_ in
+        viewModel.localUserVideoMuted.addAndNotify {isMuted in
+            self.stateProtocol?.onLocalVideoStateChanged(isMuted: isMuted)
         }
         
         
-        viewModel.isBroadcasting.addAndNotify {_ in
+        viewModel.isBroadcasting.addAndNotify {isBroadcasting in
+            self.stateProtocol?.onBroadcastStateChanged(isBroadcasting: isBroadcasting)
         }
     }
     
