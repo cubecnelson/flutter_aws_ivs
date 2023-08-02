@@ -34,20 +34,44 @@ class FlutterAwsIvsView: NSObject, FlutterPlatformView {
         case "initView":
             initView(call:call, result:result)
             
+        case "joinStage":
+            joinStage(call:call, result:result)
+            
+        case "leaveStage":
+            leaveStage(call:call, result:result)
+            
         case "toggleLocalVideoMute":
             toggleLocalVideoMute(call: call, result: result)
+            
+        case "toggleLocalAudioMute":
+            toggleLocalAudioMute(call: call, result: result)
         default:
             result(FlutterMethodNotImplemented)
         }
     }
     
+    func toggleLocalAudioMute(call: FlutterMethodCall, result: FlutterResult){
+        let isAudioMuted = _awsBoardcastView.toggleLocalAudioMute()
+        result(isAudioMuted)
+    }
+    
     func toggleLocalVideoMute(call: FlutterMethodCall, result: FlutterResult){
-        var isVideoMuted = _awsBoardcastView.toggleLocalVideoMute()
+        let isVideoMuted = _awsBoardcastView.toggleLocalVideoMute()
         result(isVideoMuted)
     }
     
     func initView(call: FlutterMethodCall, result: FlutterResult){
         _awsBoardcastView.initView()
+        result(true)
+    }
+    
+    func joinStage(call: FlutterMethodCall, result: FlutterResult){
+        _awsBoardcastView.joinStage(token: call.arguments as! String)
+        result(true)
+    }
+    
+    func leaveStage(call: FlutterMethodCall, result: FlutterResult){
+        _awsBoardcastView.leaveStage()
         result(true)
     }
     

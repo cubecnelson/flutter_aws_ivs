@@ -78,8 +78,28 @@ class AWSBroadcastView: UICollectionView {
     
     func toggleLocalVideoMute() -> Bool {
         viewModel.toggleLocalVideoMute()
-        return viewModel.isVideoMuted;
+        return viewModel.isVideoMuted
     }
+    
+    func toggleLocalAudioMute() -> Bool {
+        viewModel.toggleLocalAudioMute()
+        return viewModel.isAudioMuted
+    }
+    
+    func joinStage(token: String) {
+        viewModel.joinStage(token: token)
+    }
+    
+    func leaveStage() {
+        viewModel.leaveStage()
+    }
+    
+    func toggleAudioOnlySubscribe(participantId: String) {
+        viewModel.toggleAudioOnlySubscribe(forParticipant: participantId)
+    }
+    
+    
+    
 }
 
 
