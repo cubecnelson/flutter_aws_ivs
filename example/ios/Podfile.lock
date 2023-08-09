@@ -4,12 +4,15 @@ PODS:
   - flutter_aws_ivs (0.0.1):
     - AmazonIVSBroadcast/Stages (~> 1.10.0)
     - Flutter
+  - http_proxy (0.0.1):
+    - Flutter
   - integration_test (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_aws_ivs (from `.symlinks/plugins/flutter_aws_ivs/ios`)
+  - http_proxy (from `.symlinks/plugins/http_proxy/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
 
 SPEC REPOS:
@@ -21,6 +24,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_aws_ivs:
     :path: ".symlinks/plugins/flutter_aws_ivs/ios"
+  http_proxy:
+    :path: ".symlinks/plugins/http_proxy/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
 
@@ -28,6 +33,7 @@ SPEC CHECKSUMS:
   AmazonIVSBroadcast: f9f1de5c3f8470404b5489cee50bbd6e9dc19ee1
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_aws_ivs: 8f70aae654260211f771479a777dd8e830eb253a
+  http_proxy: 20f129d3e1c70cfdef92530b374c619832027729
   integration_test: 13825b8a9334a850581300559b8839134b124670
 
 PODFILE CHECKSUM: 008cdb69bd6fd75af0fcc4955d22b2244b55eb1f

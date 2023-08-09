@@ -1,4 +1,6 @@
 import 'package:flutter/services.dart';
+import '../models/aws_ivs_create_participant_token.dart';
+import 'package:flutter_aws_ivs/src/services/aws_ivs_service.dart';
 
 const onErrorMethodName = "onError";
 const onConnectionStateChangedMethodName = "onConnectionStateChanged";
@@ -9,9 +11,10 @@ const onBroadcastStateChangedMethodName = "onBroadcastStateChanged";
 class FlutterAwsIvsController {
   late MethodChannel _channel;
   FlutterAwsIvsControllerListener? _listener;
+  AwsIvsCreateParticipantToken? awsIvsCreateParticipantToken;
 
   setListener(FlutterAwsIvsControllerListener listener) {
-    this._listener = listener;
+    _listener = listener;
   }
 
   FlutterAwsIvsController.init(int id) {
@@ -20,7 +23,7 @@ class FlutterAwsIvsController {
   }
 
   Future<dynamic> handleMethodCall(MethodCall methodCall) async {
-    print(methodCall.method);
+    // print(methodCall.method);
     switch (methodCall.method) {
       case onErrorMethodName:
         _listener?.onError();
@@ -41,13 +44,21 @@ class FlutterAwsIvsController {
     return;
   }
 
-  Future<void> joinStage(String? token) async {
-    assert(token != null);
-    return _channel.invokeMethod('joinStage', token);
+  Future<void> joinStage(String stageArn) async {
+    awsIvsCreateParticipantToken ??=
+        await AwsIvsService().createParticipantToken(stageArn);
+    if (awsIvsCreateParticipantToken != null) {
+      return _channel.invokeMethod(
+          'joinStage', awsIvsCreateParticipantToken?.participantToken?.token);
+    }
   }
 
   Future<void> initView() async {
     return _channel.invokeMethod('initView');
+  }
+
+  Future<bool?> toggleLocalAudioMute() async {
+    return _channel.invokeMethod<bool>('toggleLocalAudioMute');
   }
 
   Future<bool?> toggleLocalVideoMute() async {

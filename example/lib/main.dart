@@ -1,12 +1,23 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
-import 'package:flutter_aws_ivs/controllers/flutter_aws_ivs_controller.dart';
 import 'package:flutter_aws_ivs/flutter_aws_ivs.dart';
-import 'package:flutter_aws_ivs/views/flutter_aws_ivs_view.dart';
+import 'package:http_proxy/http_proxy.dart';
 
-void main() {
+const region = '';
+const accessKeyId = '';
+const secretAccessKey = '';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HttpProxy httpProxy = await HttpProxy.createHttpProxy();
+  HttpOverrides.global = httpProxy;
+  AwsIvsService.init(
+      accessKeyId: accessKeyId,
+      region: region,
+      secretAccessKey: secretAccessKey);
+
   runApp(const MyApp());
 }
 
@@ -19,7 +30,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  late FlutterAwsIvsController _controller;
+  FlutterAwsIvsController? _controller;
   // final _flutterAwsIvsPlugin = FlutterAwsIvs();
 
   @override
@@ -67,13 +78,30 @@ class _MyAppState extends State<MyApp> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextButton(
-                  onPressed: () {
-                    if (_controller != null) {
-                      _controller.toggleLocalVideoMute();
-                    }
-                  },
-                  child: Text('Mute')),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      _controller?.toggleLocalAudioMute();
+                    },
+                    child: const Text('Audio Mute'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _controller?.toggleLocalVideoMute();
+                    },
+                    child: const Text('Video Mute'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _controller?.joinStage(
+                          "arn:aws:ivs:ap-northeast-2:615933877737:stage/ZXNBbnOs3u3m");
+                    },
+                    child: const Text('Create Stage'),
+                  ),
+                ],
+              ),
               Expanded(
                 child: FlutterAwsIvsView(
                   onAwsIvsCreated: _onFlutterAwsIvsViewCreated,

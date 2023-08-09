@@ -1,7 +1,7 @@
 name: flutter_aws_ivs
-description: A new Flutter plugin project.
-version: 0.0.1
-homepage:
+description: flutter_aws_ivs is Flutter Platform Integration (iOS & Android) for Amazon IVS. Amazon IVS is a managed live streaming solution that’s quick to set up for mobile and web applications. The service includes its own video player SDK and is ideal for creating interactive video experiences.
+version: 0.0.2
+repository: https://github.com/cubecnelson/flutter_aws_ivs
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -11,6 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
+  dio:
+  http:
+  intl:
+  aws_common: ^0.3.0
+  aws_signature_v4: ^0.3.0
+  crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:

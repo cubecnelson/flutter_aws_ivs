@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_aws_ivs/callbacks/flutter_aws_ivs_view_created_callback.dart';
-import 'package:flutter_aws_ivs/controllers/flutter_aws_ivs_controller.dart';
+import '../callbacks/flutter_aws_ivs_view_created_callback.dart';
+import '../controllers/flutter_aws_ivs_controller.dart';
 
 class FlutterAwsIvsView extends StatefulWidget {
   const FlutterAwsIvsView({super.key, this.onAwsIvsCreated});

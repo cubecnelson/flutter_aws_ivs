@@ -1,16 +1,3 @@
 # flutter_aws_ivs
 
-A new Flutter plugin project.
-
-## Getting Started
-
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-# flutter_aws_ivs
+flutter_aws_ivs is Flutter Platform Integration (iOS & Android) for Amazon IVS. Amazon IVS is a managed live streaming solution that’s quick to set up for mobile and web applications. The service includes its own video player SDK and is ideal for creating interactive video experiences.

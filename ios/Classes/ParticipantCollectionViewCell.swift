@@ -148,7 +148,7 @@ class ParticipantCollectionViewCell: UICollectionViewCell {
         // Check if there's an image device in registered streams
         if let imageDevice = self.imageDevice {
             // Try to create a preview from the image device and attach the preview to the cell
-            if let preview = try? imageDevice.previewView(with: .fit) {
+            if let preview = try? imageDevice.previewView(with: .fill) {
                 preview.translatesAutoresizingMaskIntoConstraints = false
                 previewView.addSubview(preview)
                 NSLayoutConstraint.activate([
