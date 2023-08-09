@@ -1,3 +1,7 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Added FlutterAwsIvsView
+
+## 0.0.2
+
+* Added AwsIvsService

@@ -11,9 +11,6 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  dio:
-  http:
-  intl:
   aws_common: ^0.3.0
   aws_signature_v4: ^0.3.0
   crypto: ^3.0.3
