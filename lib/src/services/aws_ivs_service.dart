@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aws_common/aws_common.dart';
 import 'package:aws_signature_v4/aws_signature_v4.dart';
+import 'package:flutter_aws_ivs/src/models/aws_ivs_stage_info.dart';
 import '../models/aws_ivs_create_participant_token.dart';
 
 class AwsIvsService {
@@ -73,39 +74,6 @@ class AwsIvsService {
 
   Future<AwsIvsCreateParticipantToken?> createParticipantToken(
       String stageArn) async {
-//     // Create the signer instance with credentials from the environment.
-//     const signer = AWSSigV4Signer(
-//       credentialsProvider: AWSCredentialsProvider(
-//         AWSCredentials(accessKeyId, secretAccessKey),
-//       ),
-//     );
-
-// // Create the signing scope and HTTP request
-//     const region = 'ap-northeast-2';
-//     final scope = AWSCredentialScope(
-//       region: region,
-//       service: AWSService.ivs,
-//     );
-
-//     const host = 'ivsrealtime.$region.amazonaws.com';
-//     var awsIvsUri = Uri.https(host, '/CreateParticipantToken');
-//     final request = AWSHttpRequest.post(
-//       awsIvsUri,
-//       followRedirects: true,
-//       headers: const {
-//         AWSHeaders.contentType: 'application/json',
-//       },
-//       body: jsonEncode({"stageArn": stageArn}).codeUnits,
-//     );
-//     final signedRequest = await signer.sign(
-//       request,
-//       credentialScope: scope,
-//     );
-
-//     final resp = await signedRequest.send(client: IvsAwsHttpClient()).response;
-//     final body = await resp.decodeBody();
-
-//     final json = jsonDecode(body);
     try {
       var json = await postIvsRealtimeWithAwsClient(
           path: '/CreateParticipantToken',
@@ -114,6 +82,20 @@ class AwsIvsService {
           });
 
       return AwsIvsCreateParticipantToken.fromJson(json);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<AwsIvsStageInfo?> createStage(String name) async {
+    try {
+      var json = await postIvsRealtimeWithAwsClient(
+          path: '/CreateStage',
+          requestBody: {
+            "name": name,
+          });
+
+      return AwsIvsStageInfo.fromJson(json);
     } catch (e) {
       return null;
     }

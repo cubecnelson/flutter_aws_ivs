@@ -5,15 +5,27 @@ import '../callbacks/flutter_aws_ivs_view_created_callback.dart';
 import '../controllers/flutter_aws_ivs_controller.dart';
 
 class FlutterAwsIvsView extends StatefulWidget {
-  const FlutterAwsIvsView({super.key, this.onAwsIvsCreated});
+  FlutterAwsIvsView({super.key, this.onAwsIvsCreated});
 
   final FlutterAwsIvsViewCreatedCallback? onAwsIvsCreated;
+
+  late FlutterAwsIvsController? _controller;
+
+  set controller(FlutterAwsIvsController controller) {
+    _controller = controller;
+  }
 
   @override
   State<FlutterAwsIvsView> createState() => _AwsIvsViewState();
 }
 
 class _AwsIvsViewState extends State<FlutterAwsIvsView> {
+  @override
+  void dispose() {
+    super.dispose();
+    widget._controller?.leaveStage();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
@@ -36,6 +48,7 @@ class _AwsIvsViewState extends State<FlutterAwsIvsView> {
     if (widget.onAwsIvsCreated == null) {
       return;
     }
-    widget.onAwsIvsCreated?.call(FlutterAwsIvsController.init(id));
+    widget.controller = FlutterAwsIvsController.init(id);
+    widget.onAwsIvsCreated?.call(widget._controller!);
   }
 }

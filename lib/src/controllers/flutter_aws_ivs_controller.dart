@@ -44,13 +44,14 @@ class FlutterAwsIvsController {
     return;
   }
 
-  Future<void> joinStage(String stageArn) async {
-    awsIvsCreateParticipantToken ??=
-        await AwsIvsService().createParticipantToken(stageArn);
-    if (awsIvsCreateParticipantToken != null) {
-      return _channel.invokeMethod(
-          'joinStage', awsIvsCreateParticipantToken?.participantToken?.token);
+  Future<void> joinStage(String participantToken) async {
+    if (participantToken != null) {
+      return _channel.invokeMethod('joinStage', participantToken);
     }
+  }
+
+  Future<void> leaveStage() async {
+    return _channel.invokeMethod('leaveStage');
   }
 
   Future<void> initView() async {
